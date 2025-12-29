@@ -19,14 +19,14 @@ async function auditAllData() {
   let issuesFound = false
 
   for (const v of volunteers) {
-    const activeMatches = v.matches.filter(m => ['accepted', 'active'].includes(m.status))
-    const actualStudentsHelped = new Set(v.matches.filter(m =>
+    const activeMatches = v.matches.filter((m: any) => ['accepted', 'active'].includes(m.status))
+    const actualStudentsHelped = new Set(v.matches.filter((m: any) =>
       ['accepted', 'active', 'completed'].includes(m.status)
-    ).map(m => m.studentId)).size
+    ).map((m: any) => m.studentId)).size
 
-    const totalMinutes = v.matches.flatMap(m => m.sessions)
-      .filter(s => s.status === 'completed')
-      .reduce((acc, s) => acc + (s.durationMinutes || 0), 0)
+    const totalMinutes = v.matches.flatMap((m: any) => m.sessions)
+      .filter((s: any) => s.status === 'completed')
+      .reduce((acc: number, s: any) => acc + (s.durationMinutes || 0), 0)
     const actualHours = Math.round(totalMinutes / 60 * 10) / 10
 
     const issues = []
