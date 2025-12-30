@@ -69,15 +69,15 @@ export async function GET() {
 
     // Cause distribution
     const causeDistribution: Record<string, { students: number; volunteers: number }> = {}
-    students.forEach((s) => {
+    students.forEach((s: any) => {
       if (!causeDistribution[s.cause]) {
         causeDistribution[s.cause] = { students: 0, volunteers: 0 }
       }
       causeDistribution[s.cause].students++
     })
-    volunteers.forEach((v) => {
+    volunteers.forEach((v: any) => {
       // Volunteers can support multiple causes
-      v.causes.forEach((cause) => {
+      v.causes.forEach((cause: any) => {
         if (!causeDistribution[cause]) {
           causeDistribution[cause] = { students: 0, volunteers: 0 }
         }
@@ -87,17 +87,17 @@ export async function GET() {
 
     // Match status distribution
     const matchStatusDistribution: Record<string, number> = {}
-    matches.forEach((m) => {
+    matches.forEach((m: any) => {
       matchStatusDistribution[m.status] = (matchStatusDistribution[m.status] || 0) + 1
     })
 
     // Topic coverage
     let totalTopics = 0
     let assignedTopics = 0
-    students.forEach((s) => {
+    students.forEach((s: any) => {
       const topics = (s.topicsNeedSupport as unknown as Topic[]) || []
       totalTopics += topics.length
-      assignedTopics += topics.filter((t) => t.status === 'assigned').length
+      assignedTopics += topics.filter((t: any) => t.status === 'assigned').length
     })
 
     // Sessions over time (last 30 days)
@@ -105,9 +105,9 @@ export async function GET() {
     thirtyDaysAgo.setDate(thirtyDaysAgo.getDate() - 30)
 
     const sessionsOverTime: Record<string, { scheduled: number; completed: number }> = {}
-    const recentSessions = sessions.filter((s) => s.scheduledAt && new Date(s.scheduledAt) >= thirtyDaysAgo)
+    const recentSessions = sessions.filter((s: any) => s.scheduledAt && new Date(s.scheduledAt) >= thirtyDaysAgo)
 
-    recentSessions.forEach((s) => {
+    recentSessions.forEach((s: any) => {
       const dateKey = s.scheduledAt ? new Date(s.scheduledAt).toISOString().split('T')[0] : ''
       if (!dateKey) return
       if (!sessionsOverTime[dateKey]) {
@@ -121,12 +121,12 @@ export async function GET() {
     })
 
     // Total hours
-    const totalHours = volunteers.reduce((acc, v) => acc + v.totalHoursVolunteered, 0)
+    const totalHours = volunteers.reduce((acc: number, v: any) => acc + v.totalHoursVolunteered, 0)
 
     // Popular subjects
     const subjectCounts: Record<string, number> = {}
-    matches.forEach((m) => {
-      m.assignedSubjects.forEach((subject) => {
+    matches.forEach((m: any) => {
+      m.assignedSubjects.forEach((subject: any) => {
         subjectCounts[subject] = (subjectCounts[subject] || 0) + 1
       })
     })
@@ -138,8 +138,8 @@ export async function GET() {
     // Registrations over time (last 30 days)
     const registrationsOverTime: Record<string, { students: number; volunteers: number }> = {}
     students
-      .filter((s) => new Date(s.createdAt) >= thirtyDaysAgo)
-      .forEach((s) => {
+      .filter((s: any) => new Date(s.createdAt) >= thirtyDaysAgo)
+      .forEach((s: any) => {
         const dateKey = new Date(s.createdAt).toISOString().split('T')[0]
         if (!registrationsOverTime[dateKey]) {
           registrationsOverTime[dateKey] = { students: 0, volunteers: 0 }
@@ -147,8 +147,8 @@ export async function GET() {
         registrationsOverTime[dateKey].students++
       })
     volunteers
-      .filter((v) => new Date(v.createdAt) >= thirtyDaysAgo)
-      .forEach((v) => {
+      .filter((v: any) => new Date(v.createdAt) >= thirtyDaysAgo)
+      .forEach((v: any) => {
         const dateKey = new Date(v.createdAt).toISOString().split('T')[0]
         if (!registrationsOverTime[dateKey]) {
           registrationsOverTime[dateKey] = { students: 0, volunteers: 0 }
@@ -160,15 +160,15 @@ export async function GET() {
     const studentFieldCounts: Record<string, number> = {}
     const volunteerFieldCounts: Record<string, number> = {}
 
-    students.forEach((s) => {
-      s.fieldsOfStudy.forEach((field) => {
+    students.forEach((s: any) => {
+      s.fieldsOfStudy.forEach((field: any) => {
         const normalizedField = field.toLowerCase().trim()
         studentFieldCounts[normalizedField] = (studentFieldCounts[normalizedField] || 0) + 1
       })
     })
 
-    volunteers.forEach((v) => {
-      v.fieldsOfExpertise.forEach((field) => {
+    volunteers.forEach((v: any) => {
+      v.fieldsOfExpertise.forEach((field: any) => {
         const normalizedField = field.toLowerCase().trim()
         volunteerFieldCounts[normalizedField] = (volunteerFieldCounts[normalizedField] || 0) + 1
       })
@@ -189,9 +189,9 @@ export async function GET() {
 
     // Subject demand analysis (topics students need vs subjects volunteers offer)
     const topicDemand: Record<string, { demand: number; assigned: number }> = {}
-    students.forEach((s) => {
+    students.forEach((s: any) => {
       const topics = (s.topicsNeedSupport as unknown as Topic[]) || []
-      topics.forEach((topic) => {
+      topics.forEach((topic: any) => {
         const normalizedTopic = topic.keyword.toLowerCase().trim()
         if (!topicDemand[normalizedTopic]) {
           topicDemand[normalizedTopic] = { demand: 0, assigned: 0 }
@@ -204,8 +204,8 @@ export async function GET() {
     })
 
     const volunteerSubjectCounts: Record<string, number> = {}
-    volunteers.forEach((v) => {
-      v.subjectsQualified.forEach((subject) => {
+    volunteers.forEach((v: any) => {
+      v.subjectsQualified.forEach((subject: any) => {
         const normalizedSubject = subject.toLowerCase().trim()
         volunteerSubjectCounts[normalizedSubject] = (volunteerSubjectCounts[normalizedSubject] || 0) + 1
       })
@@ -224,36 +224,36 @@ export async function GET() {
       .slice(0, 15)
 
     // Volunteer capacity utilization
-    const totalCapacity = volunteers.reduce((acc, v) => acc + v.maxCapacity, 0)
-    const usedCapacity = volunteers.reduce((acc, v) => acc + v.currentCapacity, 0)
+    const totalCapacity = volunteers.reduce((acc: number, v: any) => acc + v.maxCapacity, 0)
+    const usedCapacity = volunteers.reduce((acc: number, v: any) => acc + v.currentCapacity, 0)
     const capacityUtilization = totalCapacity > 0
       ? Math.round((usedCapacity / totalCapacity) * 100)
       : 0
 
     // Volunteers at full capacity
     const volunteersAtFullCapacity = volunteers.filter(
-      (v) => v.currentCapacity >= v.maxCapacity
+      (v: any) => v.currentCapacity >= v.maxCapacity
     ).length
 
     // Volunteers with available capacity
     const volunteersWithCapacity = volunteers.filter(
-      (v) => v.currentCapacity < v.maxCapacity
+      (v: any) => v.currentCapacity < v.maxCapacity
     ).length
 
     // Students with/without active matches
     const activeMatchStatuses = ['email_sent', 'accepted', 'active']
     const studentsWithActiveMatch = new Set(
       matches
-        .filter((m) => activeMatchStatuses.includes(m.status))
-        .map((m) => m.studentId)
+        .filter((m: any) => activeMatchStatuses.includes(m.status))
+        .map((m: any) => m.studentId)
     ).size
     const studentsWithoutMatch = students.length - studentsWithActiveMatch
 
     // Volunteers with/without active matches
     const volunteersWithActiveMatch = new Set(
       matches
-        .filter((m) => activeMatchStatuses.includes(m.status))
-        .map((m) => m.volunteerId)
+        .filter((m: any) => activeMatchStatuses.includes(m.status))
+        .map((m: any) => m.volunteerId)
     ).size
     const volunteersWithoutMatch = volunteers.length - volunteersWithActiveMatch
 
@@ -289,9 +289,9 @@ export async function GET() {
         totalStudents: students.length,
         totalVolunteers: volunteers.length,
         totalMatches: matches.length,
-        activeMatches: matches.filter((m) => m.status === 'active').length,
+        activeMatches: matches.filter((m: any) => m.status === 'active').length,
         totalSessions: sessions.length,
-        completedSessions: sessions.filter((s) => s.status === 'completed').length,
+        completedSessions: sessions.filter((s: any) => s.status === 'completed').length,
         totalHours: Math.round(totalHours * 10) / 10,
         topicCoverage: {
           total: totalTopics,
