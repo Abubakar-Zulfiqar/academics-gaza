@@ -109,7 +109,7 @@ export async function PATCH(
     }
 
     // Update the match and volunteer capacity in a transaction
-    const updatedMatch = await prisma.$transaction(async (tx) => {
+    const updatedMatch = await prisma.$transaction(async (tx: any) => {
       const match = await tx.match.update({
         where: { id: matchId },
         data: updateData,
