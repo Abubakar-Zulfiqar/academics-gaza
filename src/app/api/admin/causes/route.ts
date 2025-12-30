@@ -33,7 +33,7 @@ export async function GET() {
 
     // Get stats for each cause
     const causesWithStats = await Promise.all(
-      causes.map(async (cause) => {
+      causes.map(async (cause: any) => {
         const [studentCount, volunteerCount] = await Promise.all([
           prisma.student.count({ where: { cause: cause.name } }),
           prisma.volunteer.count({ where: { causes: { has: cause.name } } }),
