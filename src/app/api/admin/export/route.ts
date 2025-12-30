@@ -65,9 +65,9 @@ export async function GET(request: NextRequest) {
         orderBy: { createdAt: 'desc' },
       })
 
-      data = students.map((s) => {
+      data = students.map((s: any) => {
         const topics = (s.topicsNeedSupport as unknown as Topic[]) || []
-        const activeMatches = s.matches.filter((m) =>
+        const activeMatches = s.matches.filter((m: any) =>
           ['email_sent', 'accepted', 'active'].includes(m.status)
         )
 
@@ -84,8 +84,8 @@ export async function GET(request: NextRequest) {
           'Original Location': s.originalLocation || '',
           'Cause': s.cause,
           'Fields of Study': s.fieldsOfStudy.join(', '),
-          'Topics Need Support': topics.map((t) => t.keyword).join(', '),
-          'Topics Status': topics.map((t) => `${t.keyword}: ${t.status}`).join('; '),
+          'Topics Need Support': topics.map((t: any) => t.keyword).join(', '),
+          'Topics Status': topics.map((t: any) => `${t.keyword}: ${t.status}`).join('; '),
           'Original University': s.originalUniversity || '',
           'Current University': s.currentUniversity || '',
           'Credits Remaining': s.creditsRemaining || '',
@@ -100,8 +100,8 @@ export async function GET(request: NextRequest) {
           'Educational Background': s.educationalBackground || '',
           'Career Goals': s.careerGoals || '',
           'Active Matches': activeMatches.length,
-          'Matched Volunteers': activeMatches.map((m) => m.volunteer.fullName).join(', '),
-          'Assigned Subjects': activeMatches.flatMap((m) => m.assignedSubjects).join(', '),
+          'Matched Volunteers': activeMatches.map((m: any) => m.volunteer.fullName).join(', '),
+          'Assigned Subjects': activeMatches.flatMap((m: any) => m.assignedSubjects).join(', '),
           'Registered At': new Date(s.user.createdAt).toLocaleDateString(),
           'Last Updated': new Date(s.updatedAt).toLocaleDateString(),
         }
@@ -131,8 +131,8 @@ export async function GET(request: NextRequest) {
         orderBy: { createdAt: 'desc' },
       })
 
-      data = volunteers.map((v) => {
-        const activeMatches = v.matches.filter((m) =>
+      data = volunteers.map((v: any) => {
+        const activeMatches = v.matches.filter((m: any) =>
           ['email_sent', 'accepted', 'active'].includes(m.status)
         )
 
@@ -163,8 +163,8 @@ export async function GET(request: NextRequest) {
           'Total Hours Volunteered': v.totalHoursVolunteered,
           'Students Helped': v.studentsHelped,
           'Active Matches': activeMatches.length,
-          'Matched Students': activeMatches.map((m) => m.student.fullName).join(', '),
-          'Teaching Subjects': activeMatches.flatMap((m) => m.assignedSubjects).join(', '),
+          'Matched Students': activeMatches.map((m: any) => m.student.fullName).join(', '),
+          'Teaching Subjects': activeMatches.flatMap((m: any) => m.assignedSubjects).join(', '),
           'Registered At': new Date(v.user.createdAt).toLocaleDateString(),
           'Last Updated': new Date(v.updatedAt).toLocaleDateString(),
         }
@@ -215,7 +215,7 @@ export async function GET(request: NextRequest) {
         orderBy: { createdAt: 'desc' },
       })
 
-      data = matches.map((m) => {
+      data = matches.map((m: any) => {
         const reasons = Array.isArray(m.matchReasons) ? m.matchReasons : []
         const studentTopics = (m.student.topicsNeedSupport as unknown as Topic[]) || []
         return {
@@ -226,7 +226,7 @@ export async function GET(request: NextRequest) {
           'Student Phone': m.student.phoneNumber || '',
           'Student Cause': m.student.cause,
           'Student Fields': m.student.fieldsOfStudy.join(', '),
-          'Student Topics': studentTopics.map((t) => t.keyword).join(', '),
+          'Student Topics': studentTopics.map((t: any) => t.keyword).join(', '),
           'Student Location': [m.student.currentCity, m.student.currentCountry].filter(Boolean).join(', '),
           'Student Language': m.student.preferredLanguage || '',
           'Volunteer Name': m.volunteer.fullName,
@@ -268,7 +268,7 @@ export async function GET(request: NextRequest) {
 
       // Use ALL columns
       const headers = Object.keys(data[0] || {})
-      const rows = data.map((row) => headers.map((h) => {
+      const rows = data.map((row: any) => headers.map((h: any) => {
         const value = String(row[h] || '')
         // Truncate very long values but keep more content
         return value.length > 60 ? value.substring(0, 57) + '...' : value
@@ -307,10 +307,10 @@ export async function GET(request: NextRequest) {
     XLSX.utils.book_append_sheet(workbook, worksheet, type.charAt(0).toUpperCase() + type.slice(1))
 
     // Auto-size columns
-    const colWidths = Object.keys(data[0] || {}).map((key) => ({
+    const colWidths = Object.keys(data[0] || {}).map((key: any) => ({
       wch: Math.max(
         key.length,
-        ...data.map((row) => String(row[key] || '').length)
+        ...data.map((row: any) => String(row[key] || '').length)
       ),
     }))
     worksheet['!cols'] = colWidths
