@@ -18,7 +18,7 @@ async function auditAllData() {
 
   let issuesFound = false
 
-  for (const v of volunteers) {
+  for (const v of volunteers as any[]) {
     const activeMatches = v.matches.filter((m: any) => ['accepted', 'active'].includes(m.status))
     const actualStudentsHelped = new Set(v.matches.filter((m: any) =>
       ['accepted', 'active', 'completed'].includes(m.status)
@@ -37,7 +37,7 @@ async function auditAllData() {
     if (issues.length > 0) {
       issuesFound = true
       console.log(`${v.fullName}: ISSUES FOUND`)
-      issues.forEach(i => console.log(`  - ${i}`))
+      issues.forEach((i: any) => console.log(`  - ${i}`))
     } else {
       console.log(`${v.fullName}: OK`)
     }

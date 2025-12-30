@@ -87,13 +87,13 @@ export async function GET() {
     // Process matches
     for (const student of students) {
       const topics = student.topicsNeedSupport as unknown as Topic[]
-      const unassignedTopics = topics.filter((t) => t.status === 'unassigned')
+      const unassignedTopics = topics.filter((t: any) => t.status === 'unassigned')
 
       // Skip if no unassigned topics
       if (unassignedTopics.length === 0) continue
 
       // Get volunteers this student is already matched with
-      const existingVolunteerIds = student.matches.map((m) => m.volunteerId)
+      const existingVolunteerIds = student.matches.map((m: any) => m.volunteerId)
 
       for (const volunteer of volunteers) {
         // Skip if already matched
@@ -112,7 +112,7 @@ export async function GET() {
           {
             cause: student.cause,
             fieldsOfStudy: student.fieldsOfStudy,
-            topicsNeedSupport: unassignedTopics.map((t) => t.keyword),
+            topicsNeedSupport: unassignedTopics.map((t: any) => t.keyword),
           }
         )
 
@@ -133,7 +133,7 @@ export async function GET() {
             causeMatch: matchResult.causeMatch,
             fieldMatch: matchResult.fieldMatch,
             subjectMatch: {
-              matches: matchResult.subjectMatch.matches.map((m) => ({
+              matches: matchResult.subjectMatch.matches.map((m: any) => ({
                 studentSubject: m.studentSubject,
                 volunteerSubject: m.volunteerSubject,
                 confidence: m.confidence,
@@ -149,16 +149,16 @@ export async function GET() {
     const processingTime = Date.now() - startTime
 
     // Sort by score descending
-    suggestions.sort((a, b) => b.score - a.score)
+    suggestions.sort((a: any, b: any) => b.score - a.score)
 
     // Get summary stats
-    const studentsNeedingHelp = students.filter((s) => {
+    const studentsNeedingHelp = students.filter((s: any) => {
       const topics = s.topicsNeedSupport as unknown as Topic[]
-      return topics.some((t) => t.status === 'unassigned')
+      return topics.some((t: any) => t.status === 'unassigned')
     })
 
     const availableVolunteers = volunteers.filter(
-      (v) => v.currentCapacity < v.maxCapacity
+      (v: any) => v.currentCapacity < v.maxCapacity
     )
 
     return NextResponse.json({

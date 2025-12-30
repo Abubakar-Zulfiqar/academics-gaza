@@ -109,7 +109,7 @@ export async function matchSubjectWithLLM(
 
 Student needs help with: "${studentSubject}"
 
-Volunteer can teach: ${volunteerSubjects.map((s, i) => `${i + 1}. "${s}"`).join(', ')}
+Volunteer can teach: ${volunteerSubjects.map((s: any, i: any) => `${i + 1}. "${s}"`).join(', ')}
 
 Rules for matching:
 - "AI" matches "Artificial Intelligence" (abbreviation)
@@ -140,14 +140,14 @@ JSON response:`
       reason: string
     }>
 
-    return results.map((r) => ({
+    return results.map((r: any) => ({
       ...r,
       studentSubject,
     }))
   } catch (error) {
     console.error('Failed to parse LLM response for subject matching:', error)
     // Fallback to basic string matching
-    return volunteerSubjects.map((vs) => ({
+    return volunteerSubjects.map((vs: any) => ({
       volunteerSubject: vs,
       studentSubject,
       isMatch:
@@ -180,11 +180,11 @@ export async function matchAllSubjectsWithLLM(
   // Process each student subject
   for (const studentSubject of studentSubjects) {
     const results = await matchSubjectWithLLM(studentSubject, volunteerSubjects)
-    allMatches.push(...results.filter((r) => r.isMatch))
+    allMatches.push(...results.filter((r: any) => r.isMatch))
   }
 
   // Sort by confidence
-  allMatches.sort((a, b) => b.confidence - a.confidence)
+  allMatches.sort((a: any, b: any) => b.confidence - a.confidence)
 
   return {
     matches: allMatches,
@@ -210,9 +210,9 @@ export async function batchMatchSubjectsWithLLM(
 
   const prompt = `You are a subject matching assistant. Match student subjects with volunteer teaching subjects.
 
-Student needs help with: ${studentSubjects.map((s) => `"${s}"`).join(', ')}
+Student needs help with: ${studentSubjects.map((s: any) => `"${s}"`).join(', ')}
 
-Volunteer can teach: ${volunteerSubjects.map((s) => `"${s}"`).join(', ')}
+Volunteer can teach: ${volunteerSubjects.map((s: any) => `"${s}"`).join(', ')}
 
 Rules:
 - Abbreviations match (AI = Artificial Intelligence, ML = Machine Learning)
@@ -239,8 +239,8 @@ JSON response:`
     const jsonStr = extractJSON(response)
     const results = JSON.parse(jsonStr) as SubjectMatchResult[]
 
-    const validMatches = results.filter((r) => r.isMatch)
-    validMatches.sort((a, b) => b.confidence - a.confidence)
+    const validMatches = results.filter((r: any) => r.isMatch)
+    validMatches.sort((a: any, b: any) => b.confidence - a.confidence)
 
     return {
       matches: validMatches,
@@ -302,8 +302,8 @@ export function matchFields(
   isMatch: boolean
   matchedFields: string[]
 } {
-  const vFields = volunteerFields.map((f) => f.toLowerCase().trim())
-  const sFields = studentFields.map((f) => f.toLowerCase().trim())
+  const vFields = volunteerFields.map((f: any) => f.toLowerCase().trim())
+  const sFields = studentFields.map((f: any) => f.toLowerCase().trim())
 
   const matchedFields: string[] = []
 
@@ -367,10 +367,10 @@ export function matchFields(
       // Check if both belong to same category
       for (const [category, variations] of Object.entries(fieldCategories)) {
         const vInCategory = variations.some(
-          (v) => vField.includes(v) || v.includes(vField)
+          (v: any) => vField.includes(v) || v.includes(vField)
         )
         const sInCategory = variations.some(
-          (v) => sField.includes(v) || v.includes(sField)
+          (v: any) => sField.includes(v) || v.includes(sField)
         )
 
         if (vInCategory && sInCategory && !matchedFields.includes(category)) {
@@ -476,7 +476,7 @@ export async function calculateFullMatch(
         volunteer.subjectsQualified
       )
       if (subjectMatch.hasAnyMatch) {
-        reasons.push('Subject matches (basic): ' + subjectMatch.matches.map(m => m.studentSubject).join(', '))
+        reasons.push('Subject matches (basic): ' + subjectMatch.matches.map((m: any) => m.studentSubject).join(', '))
       }
     }
   } catch (error) {
@@ -501,7 +501,7 @@ export async function calculateFullMatch(
   if (subjectMatch.hasAnyMatch) {
     // Average confidence of matches, scaled to 70 points
     const avgConfidence =
-      subjectMatch.matches.reduce((sum, m) => sum + m.confidence, 0) /
+      subjectMatch.matches.reduce((sum: any, m: any) => sum + m.confidence, 0) /
       subjectMatch.matches.length
     score += Math.round((avgConfidence / 100) * 70)
   }
@@ -634,8 +634,8 @@ function checkAbbreviation(a: string, b: string): boolean {
 
   for (const [abbr, fullForms] of Object.entries(abbreviations)) {
     if (
-      (a === abbr && fullForms.some((f) => b.includes(f))) ||
-      (b === abbr && fullForms.some((f) => a.includes(f)))
+      (a === abbr && fullForms.some((f: any) => b.includes(f))) ||
+      (b === abbr && fullForms.some((f: any) => a.includes(f)))
     ) {
       return true
     }

@@ -17,7 +17,7 @@ async function syncAllData() {
 
   let fixedCount = 0
 
-  for (const v of volunteers) {
+  for (const v of volunteers as any[]) {
     // Calculate actual values
     const actualCapacity = v.matches.filter((m: any) => ['accepted', 'active'].includes(m.status)).length
     const actualStudentsHelped = new Set(v.matches.filter((m: any) =>

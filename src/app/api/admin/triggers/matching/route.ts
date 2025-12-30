@@ -52,14 +52,14 @@ export async function POST(request: NextRequest) {
 
       const topics = student.topicsNeedSupport as unknown as Topic[]
       const unassignedTopics = topics
-        .filter((t) => t.status === 'unassigned')
-        .map((t) => t.keyword)
+        .filter((t: any) => t.status === 'unassigned')
+        .map((t: any) => t.keyword)
 
       if (unassignedTopics.length === 0) {
         return NextResponse.json({ suggestions: [] })
       }
 
-      const existingVolunteerIds = student.matches.map((m) => m.volunteerId)
+      const existingVolunteerIds = student.matches.map((m: any) => m.volunteerId)
 
       const allVolunteers = await prisma.volunteer.findMany({
         where: {
@@ -71,8 +71,8 @@ export async function POST(request: NextRequest) {
       const volunteers = allVolunteers.filter(v => v.currentCapacity < v.maxCapacity)
 
       suggestions = volunteers
-        .map((volunteer) => {
-          const matchingSubjects = volunteer.subjectsQualified.filter((subject) =>
+        .map((volunteer: any) => {
+          const matchingSubjects = volunteer.subjectsQualified.filter((subject: any) =>
             unassignedTopics.some(
               (topic) =>
                 topic.toLowerCase().includes(subject.toLowerCase()) ||
@@ -111,7 +111,7 @@ export async function POST(request: NextRequest) {
           }
         })
         .filter((s): s is NonNullable<typeof s> => s !== null)
-        .sort((a, b) => b.score - a.score)
+        .sort((a: any, b: any) => b.score - a.score)
         .slice(0, 10)
     } else if (triggerType === 'capacity_change') {
       // Find students that could be matched with a volunteer whose capacity increased
@@ -130,7 +130,7 @@ export async function POST(request: NextRequest) {
         return NextResponse.json({ suggestions: [] })
       }
 
-      const existingStudentIds = volunteer.matches.map((m) => m.studentId)
+      const existingStudentIds = volunteer.matches.map((m: any) => m.studentId)
 
       const students = await prisma.student.findMany({
         where: {
@@ -140,15 +140,15 @@ export async function POST(request: NextRequest) {
       })
 
       suggestions = students
-        .map((student) => {
+        .map((student: any) => {
           const topics = student.topicsNeedSupport as unknown as Topic[]
           const unassignedTopics = topics
-            .filter((t) => t.status === 'unassigned')
-            .map((t) => t.keyword)
+            .filter((t: any) => t.status === 'unassigned')
+            .map((t: any) => t.keyword)
 
           if (unassignedTopics.length === 0) return null
 
-          const matchingSubjects = volunteer.subjectsQualified.filter((subject) =>
+          const matchingSubjects = volunteer.subjectsQualified.filter((subject: any) =>
             unassignedTopics.some(
               (topic) =>
                 topic.toLowerCase().includes(subject.toLowerCase()) ||
@@ -187,7 +187,7 @@ export async function POST(request: NextRequest) {
           }
         })
         .filter((s): s is NonNullable<typeof s> => s !== null)
-        .sort((a, b) => b.score - a.score)
+        .sort((a: any, b: any) => b.score - a.score)
         .slice(0, 10)
     } else if (triggerType === 'full_scan') {
       // Find all potential matches across the platform
@@ -204,18 +204,18 @@ export async function POST(request: NextRequest) {
       for (const student of students) {
         const topics = student.topicsNeedSupport as unknown as Topic[]
         const unassignedTopics = topics
-          .filter((t) => t.status === 'unassigned')
-          .map((t) => t.keyword)
+          .filter((t: any) => t.status === 'unassigned')
+          .map((t: any) => t.keyword)
 
         if (unassignedTopics.length === 0) continue
 
-        const existingVolunteerIds = student.matches.map((m) => m.volunteerId)
+        const existingVolunteerIds = student.matches.map((m: any) => m.volunteerId)
 
         for (const volunteer of volunteers) {
           if (existingVolunteerIds.includes(volunteer.id)) continue
           if (!volunteer.causes.includes(student.cause)) continue
 
-          const matchingSubjects = volunteer.subjectsQualified.filter((subject) =>
+          const matchingSubjects = volunteer.subjectsQualified.filter((subject: any) =>
             unassignedTopics.some(
               (topic) =>
                 topic.toLowerCase().includes(subject.toLowerCase()) ||
@@ -255,7 +255,7 @@ export async function POST(request: NextRequest) {
         }
       }
 
-      suggestions = suggestions.sort((a, b) => b.score - a.score).slice(0, 50)
+      suggestions = suggestions.sort((a: any, b: any) => b.score - a.score).slice(0, 50)
     }
 
     // Log the trigger (only if it's a valid trigger type)

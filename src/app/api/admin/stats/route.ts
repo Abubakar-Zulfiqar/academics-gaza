@@ -53,11 +53,11 @@ export async function GET() {
     let unassignedTopics = 0
     let studentsNeedingAssignment = 0
 
-    allStudents.forEach((student) => {
+    allStudents.forEach((student: any) => {
       const topics = student.topicsNeedSupport as Array<{ status: string }> || []
-      const hasUnassigned = topics.some((t) => t.status === 'unassigned')
+      const hasUnassigned = topics.some((t: any) => t.status === 'unassigned')
       if (hasUnassigned) studentsNeedingAssignment++
-      topics.forEach((t) => {
+      topics.forEach((t: any) => {
         if (t.status === 'assigned') assignedTopics++
         else unassignedTopics++
       })
@@ -72,14 +72,14 @@ export async function GET() {
     // Get cause breakdown
     const causeMap = new Map<string, { students: number; volunteers: number }>()
 
-    allStudents.forEach((student) => {
+    allStudents.forEach((student: any) => {
       const existing = causeMap.get(student.cause) || { students: 0, volunteers: 0 }
       causeMap.set(student.cause, { ...existing, students: existing.students + 1 })
     })
 
-    allVolunteers.forEach((volunteer) => {
+    allVolunteers.forEach((volunteer: any) => {
       // Volunteers can support multiple causes
-      volunteer.causes.forEach((cause) => {
+      volunteer.causes.forEach((cause: any) => {
         const existing = causeMap.get(cause) || { students: 0, volunteers: 0 }
         causeMap.set(cause, { ...existing, volunteers: existing.volunteers + 1 })
       })

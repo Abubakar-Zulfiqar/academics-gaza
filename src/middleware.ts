@@ -27,7 +27,7 @@ export async function middleware(request: NextRequest) {
   }
 
   // Redirect authenticated users away from auth pages
-  if (isAuthenticated && authPaths.some((path) => pathname === path)) {
+  if (isAuthenticated && authPaths.some((path: any) => pathname === path)) {
     if (userRole === 'admin') {
       return NextResponse.redirect(new URL('/admin', request.url))
     } else if (userRole === 'volunteer') {

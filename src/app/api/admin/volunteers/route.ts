@@ -33,10 +33,10 @@ export async function GET() {
       ],
     })
 
-    const formattedVolunteers = volunteers.map((volunteer) => {
+    const formattedVolunteers = volunteers.map((volunteer: any) => {
       // Calculate current capacity dynamically from active matches
       const activeMatchCount = volunteer.matches.filter(
-        (m) => ['accepted', 'active'].includes(m.status)
+        (m: any) => ['accepted', 'active'].includes(m.status)
       ).length
 
       return {
@@ -57,7 +57,7 @@ export async function GET() {
         totalHoursVolunteered: volunteer.totalHoursVolunteered,
         studentsHelped: volunteer.studentsHelped,
         isActive: volunteer.isActive,
-        matches: volunteer.matches.map((match) => ({
+        matches: volunteer.matches.map((match: any) => ({
           id: match.id,
           status: match.status,
           student: {
@@ -128,7 +128,7 @@ export async function POST(request: NextRequest) {
       where: { isActive: true },
       select: { name: true },
     })
-    const allCauseNames = allCauses.map(c => c.name)
+    const allCauseNames = allCauses.map((c: any) => c.name)
 
     // Check if user already exists
     const existingUser = await prisma.user.findUnique({
@@ -146,7 +146,7 @@ export async function POST(request: NextRequest) {
     const passwordHash = await hashPassword(password)
 
     // Create user and volunteer in a transaction
-    const result = await prisma.$transaction(async (tx) => {
+    const result = await prisma.$transaction(async (tx: any) => {
       // Create user
       const user = await tx.user.create({
         data: {

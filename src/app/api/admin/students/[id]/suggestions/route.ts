@@ -171,8 +171,8 @@ export async function GET(
     // Get unassigned topics
     const topics = student.topicsNeedSupport as unknown as Topic[]
     const unassignedTopics = topics
-      .filter((t) => t.status === 'unassigned')
-      .map((t) => t.keyword)
+      .filter((t: any) => t.status === 'unassigned')
+      .map((t: any) => t.keyword)
 
     if (unassignedTopics.length === 0) {
       return NextResponse.json({ suggestions: [] })
@@ -180,7 +180,7 @@ export async function GET(
 
     // Create a map of existing matches for quick lookup
     const existingMatchesMap = new Map(
-      student.matches.map((m) => [m.volunteerId, m])
+      student.matches.map((m: any) => [m.volunteerId, m])
     )
 
     // Find ALL volunteers who support the student's cause (including already matched ones)
@@ -193,7 +193,7 @@ export async function GET(
     // Filter to only those with:
     // 1. Matching major fields
     // 2. Available capacity OR already matched
-    const eligibleVolunteers = volunteers.filter((v) => {
+    const eligibleVolunteers = volunteers.filter((v: any) => {
       const existingMatch = existingMatchesMap.get(v.id)
 
       // Must have matching major field
@@ -207,7 +207,7 @@ export async function GET(
 
     // Calculate match scores using embeddings with fallback
     const suggestionsWithScores = await Promise.all(
-      eligibleVolunteers.map(async (volunteer) => {
+      eligibleVolunteers.map(async (volunteer: any) => {
         let subjectResult: { matchedPairs: Array<{ volunteer: string; student: string; similarity: number }>; score: number }
 
         try {
@@ -236,7 +236,7 @@ export async function GET(
 
         // Format matching subjects with similarity scores
         // Note: similarity is already 0-100 from embeddings, no need to multiply
-        const matchingSubjects = subjectResult.matchedPairs.map((pair) => ({
+        const matchingSubjects = subjectResult.matchedPairs.map((pair: any) => ({
           volunteer: pair.volunteer,
           student: pair.student,
           similarity: Math.round(pair.similarity),
@@ -268,7 +268,7 @@ export async function GET(
     // Filter out null results and sort by score (prioritize already matched volunteers)
     const suggestions = suggestionsWithScores
       .filter((s): s is NonNullable<typeof s> => s !== null)
-      .sort((a, b) => {
+      .sort((a: any, b: any) => {
         // Prioritize already matched volunteers (they're easier to add subjects to)
         if (a.isAlreadyMatched && !b.isAlreadyMatched) return -1
         if (!a.isAlreadyMatched && b.isAlreadyMatched) return 1

@@ -49,11 +49,11 @@ export async function DELETE(
     const wasActive = ['accepted', 'active'].includes(match.status)
 
     // Delete match, reset student topics, and update volunteer capacity in a transaction
-    await prisma.$transaction(async (tx) => {
+    await prisma.$transaction(async (tx: any) => {
       // Reset student's topic status for assigned subjects
       if (match.assignedSubjects.length > 0) {
         const topics = match.student.topicsNeedSupport as unknown as Topic[]
-        const updatedTopics = topics.map((topic) => {
+        const updatedTopics = topics.map((topic: any) => {
           // If this topic was assigned in this match, reset it
           if (
             match.assignedSubjects.some(

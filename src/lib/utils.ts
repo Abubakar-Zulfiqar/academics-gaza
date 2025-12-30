@@ -96,9 +96,9 @@ const SYNONYM_GROUPS: string[][] = [
 
 // Build a map for quick synonym lookup
 const synonymMap = new Map<string, string[]>()
-SYNONYM_GROUPS.forEach(group => {
-  const normalizedGroup = group.map(term => term.toLowerCase().trim())
-  normalizedGroup.forEach(term => {
+SYNONYM_GROUPS.forEach((group: any) => {
+  const normalizedGroup = group.map((term: any) => term.toLowerCase().trim())
+  normalizedGroup.forEach((term: any) => {
     synonymMap.set(term, normalizedGroup)
   })
 })
@@ -340,7 +340,7 @@ export function formatDateTime(date: Date | string): string {
 export function getInitials(name: string): string {
   return name
     .split(' ')
-    .map((n) => n[0])
+    .map((n: any) => n[0])
     .join('')
     .toUpperCase()
     .slice(0, 2)
@@ -427,8 +427,8 @@ export function calculateMatchScore(
   // Smart Subject keyword matching (30 points)
   const volunteerSubjects = volunteer.subjectsQualified
   const studentTopics = student.topicsNeedSupport
-    .filter((t) => t.status === 'unassigned')
-    .map((t) => t.keyword)
+    .filter((t: any) => t.status === 'unassigned')
+    .map((t: any) => t.keyword)
 
   const subjectMatchResult = calculateSmartSubjectScore(volunteerSubjects, studentTopics)
 

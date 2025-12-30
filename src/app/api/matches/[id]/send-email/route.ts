@@ -58,8 +58,8 @@ export async function POST(
       // Replace template variables
       const topics = match.student.topicsNeedSupport as unknown as Topic[]
       const topicsList = topics
-        .filter((t) => match.assignedSubjects.includes(t.keyword))
-        .map((t) => `- ${t.keyword}`)
+        .filter((t: any) => match.assignedSubjects.includes(t.keyword))
+        .map((t: any) => `- ${t.keyword}`)
         .join('\n')
 
       const emailBody = template.body

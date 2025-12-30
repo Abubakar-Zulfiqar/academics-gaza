@@ -46,7 +46,7 @@ export async function GET() {
     })
 
     return NextResponse.json({
-      matches: matches.map((match) => ({
+      matches: matches.map((match: any) => ({
         id: match.id,
         status: match.status,
         assignedSubjects: match.assignedSubjects,

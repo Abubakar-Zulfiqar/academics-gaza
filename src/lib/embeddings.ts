@@ -93,7 +93,7 @@ export async function getEmbedding(text: string): Promise<number[]> {
 export async function getEmbeddings(texts: string[]): Promise<Map<string, number[]>> {
   const results = new Map<string, number[]>()
   const textsToFetch: string[] = []
-  const normalizedTexts = texts.map((t) => t.toLowerCase().trim())
+  const normalizedTexts = texts.map((t: any) => t.toLowerCase().trim())
 
   // Check caches first
   for (const text of normalizedTexts) {
@@ -122,7 +122,7 @@ export async function getEmbeddings(texts: string[]): Promise<Map<string, number
   }
 
   // Filter out DB cached texts
-  const textsToGenerate = textsToFetch.filter((t) => !dbCachedTexts.has(t))
+  const textsToGenerate = textsToFetch.filter((t: any) => !dbCachedTexts.has(t))
 
   if (textsToGenerate.length === 0) {
     return results
@@ -200,7 +200,7 @@ export async function findBestSemanticMatches(
   }
 
   // Sort by similarity descending
-  matches.sort((a, b) => b.similarity - a.similarity)
+  matches.sort((a: any, b: any) => b.similarity - a.similarity)
 
   return matches
 }
@@ -332,7 +332,7 @@ const SYNONYM_GROUPS: string[][] = [
 // Build synonym lookup map
 const SYNONYM_MAP: Record<string, Set<string>> = {}
 for (const group of SYNONYM_GROUPS) {
-  const normalizedGroup = group.map(s => s.toLowerCase())
+  const normalizedGroup = group.map((s: any) => s.toLowerCase())
   for (const term of normalizedGroup) {
     if (!SYNONYM_MAP[term]) {
       SYNONYM_MAP[term] = new Set()
@@ -393,7 +393,7 @@ export function isStringMatch(str1: string, str2: string): { isMatch: boolean; s
   // Word-level partial matching (for multi-word terms)
   const words1 = s1.split(/\s+/)
   const words2 = s2.split(/\s+/)
-  const commonWords = words1.filter(w => words2.includes(w) && w.length > 2)
+  const commonWords = words1.filter((w: any) => words2.includes(w) && w.length > 2)
   if (commonWords.length > 0) {
     const matchRatio = commonWords.length / Math.max(words1.length, words2.length)
     if (matchRatio >= 0.5) {
@@ -608,7 +608,7 @@ export async function calculateMatchScoreWithEmbeddings(
   const reasons: string[] = []
 
   // Get ALL student topics (not just unassigned) for matching
-  const studentTopics = student.topicsNeedSupport.map((t) => t.keyword)
+  const studentTopics = student.topicsNeedSupport.map((t: any) => t.keyword)
 
   // Calculate subject matching first (most important - 40 points)
   let subjectResult = { score: 0, matchedPairs: [] as Array<{ volunteer: string; student: string; similarity: number }> }
@@ -624,7 +624,7 @@ export async function calculateMatchScoreWithEmbeddings(
       const subjectScore = Math.round(subjectResult.score * 0.4)
       score += subjectScore
 
-      const matchDescriptions = subjectResult.matchedPairs.map((p) => {
+      const matchDescriptions = subjectResult.matchedPairs.map((p: any) => {
         // Note: p.similarity is already 0-100 from isStringMatch
         const similarity = Math.round(p.similarity)
         return p.volunteer.toLowerCase() === p.student.toLowerCase()
@@ -642,11 +642,11 @@ export async function calculateMatchScoreWithEmbeddings(
   )
 
   if (fieldResult.matchedPairs.length > 0) {
-    const avgFieldSimilarity = fieldResult.matchedPairs.reduce((sum, m) => sum + m.similarity, 0) / fieldResult.matchedPairs.length
+    const avgFieldSimilarity = fieldResult.matchedPairs.reduce((sum: any, m: any) => sum + m.similarity, 0) / fieldResult.matchedPairs.length
     const fieldScore = Math.round(30 * avgFieldSimilarity)
     score += fieldScore
 
-    const matchedFieldNames = fieldResult.matchedPairs.map((m) =>
+    const matchedFieldNames = fieldResult.matchedPairs.map((m: any) =>
       m.volunteer.toLowerCase() === m.student.toLowerCase()
         ? m.volunteer
         : `${m.student} ≈ ${m.volunteer} (${Math.round(m.similarity * 100)}%)`

@@ -44,7 +44,7 @@ export async function GET() {
       ],
     })
 
-    const formattedStudents = students.map((student) => ({
+    const formattedStudents = students.map((student: any) => ({
       id: student.id,
       fullName: student.fullName,
       cause: student.cause,
@@ -56,7 +56,7 @@ export async function GET() {
       currentCity: student.currentCity,
       currentCountry: student.currentCountry,
       isActive: student.isActive,
-      matches: student.matches.map((match) => ({
+      matches: student.matches.map((match: any) => ({
         id: match.id,
         status: match.status,
         volunteer: {
@@ -151,7 +151,7 @@ export async function POST(request: NextRequest) {
     }))
 
     // Create user and student in a transaction
-    const result = await prisma.$transaction(async (tx) => {
+    const result = await prisma.$transaction(async (tx: any) => {
       // Create user
       const user = await tx.user.create({
         data: {
