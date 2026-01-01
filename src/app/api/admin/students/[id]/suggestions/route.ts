@@ -267,7 +267,7 @@ export async function GET(
 
     // Filter out null results and sort by score (prioritize already matched volunteers)
     const suggestions = suggestionsWithScores
-      .filter((s): s is NonNullable<typeof s> => s !== null)
+      .filter((s: any): s is NonNullable<typeof s> => s !== null)
       .sort((a: any, b: any) => {
         // Prioritize already matched volunteers (they're easier to add subjects to)
         if (a.isAlreadyMatched && !b.isAlreadyMatched) return -1

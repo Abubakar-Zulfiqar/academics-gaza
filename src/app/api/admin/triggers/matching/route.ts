@@ -110,7 +110,7 @@ export async function POST(request: NextRequest) {
             matchingSubjects,
           }
         })
-        .filter((s): s is NonNullable<typeof s> => s !== null)
+        .filter((s: any): s is NonNullable<typeof s> => s !== null)
         .sort((a: any, b: any) => b.score - a.score)
         .slice(0, 10)
     } else if (triggerType === 'capacity_change') {
@@ -186,7 +186,7 @@ export async function POST(request: NextRequest) {
             matchingSubjects,
           }
         })
-        .filter((s): s is NonNullable<typeof s> => s !== null)
+        .filter((s: any): s is NonNullable<typeof s> => s !== null)
         .sort((a: any, b: any) => b.score - a.score)
         .slice(0, 10)
     } else if (triggerType === 'full_scan') {
