@@ -68,13 +68,13 @@ export async function POST(request: NextRequest) {
         },
       })
       // Filter volunteers with available capacity
-      const volunteers = allVolunteers.filter(v => v.currentCapacity < v.maxCapacity)
+      const volunteers = allVolunteers.filter((v: typeof allVolunteers[number]) => v.currentCapacity < v.maxCapacity)
 
       suggestions = volunteers
         .map((volunteer: any) => {
           const matchingSubjects = volunteer.subjectsQualified.filter((subject: any) =>
             unassignedTopics.some(
-              (topic) =>
+              (topic: string) =>
                 topic.toLowerCase().includes(subject.toLowerCase()) ||
                 subject.toLowerCase().includes(topic.toLowerCase())
             )
@@ -95,7 +95,7 @@ export async function POST(request: NextRequest) {
             {
               cause: student.cause,
               fieldsOfStudy: student.fieldsOfStudy,
-              topicsNeedSupport: unassignedTopics.map(t => ({ keyword: t, status: 'unassigned' })),
+              topicsNeedSupport: unassignedTopics.map((t: string) => ({ keyword: t, status: 'unassigned' })),
               preferredLanguage: student.preferredLanguage,
               hoursPerWeekNeeded: student.hoursPerWeekNeeded,
             }
@@ -150,7 +150,7 @@ export async function POST(request: NextRequest) {
 
           const matchingSubjects = volunteer.subjectsQualified.filter((subject: any) =>
             unassignedTopics.some(
-              (topic) =>
+              (topic: string) =>
                 topic.toLowerCase().includes(subject.toLowerCase()) ||
                 subject.toLowerCase().includes(topic.toLowerCase())
             )
@@ -171,7 +171,7 @@ export async function POST(request: NextRequest) {
             {
               cause: student.cause,
               fieldsOfStudy: student.fieldsOfStudy,
-              topicsNeedSupport: unassignedTopics.map(t => ({ keyword: t, status: 'unassigned' })),
+              topicsNeedSupport: unassignedTopics.map((t: string) => ({ keyword: t, status: 'unassigned' })),
               preferredLanguage: student.preferredLanguage,
               hoursPerWeekNeeded: student.hoursPerWeekNeeded,
             }
@@ -199,7 +199,7 @@ export async function POST(request: NextRequest) {
 
       const allVolunteers = await prisma.volunteer.findMany()
       // Filter volunteers with available capacity
-      const volunteers = allVolunteers.filter(v => v.currentCapacity < v.maxCapacity)
+      const volunteers = allVolunteers.filter((v: typeof allVolunteers[number]) => v.currentCapacity < v.maxCapacity)
 
       for (const student of students) {
         const topics = student.topicsNeedSupport as unknown as Topic[]
@@ -217,7 +217,7 @@ export async function POST(request: NextRequest) {
 
           const matchingSubjects = volunteer.subjectsQualified.filter((subject: any) =>
             unassignedTopics.some(
-              (topic) =>
+              (topic: string) =>
                 topic.toLowerCase().includes(subject.toLowerCase()) ||
                 subject.toLowerCase().includes(topic.toLowerCase())
             )
@@ -238,7 +238,7 @@ export async function POST(request: NextRequest) {
             {
               cause: student.cause,
               fieldsOfStudy: student.fieldsOfStudy,
-              topicsNeedSupport: unassignedTopics.map(t => ({ keyword: t, status: 'unassigned' })),
+              topicsNeedSupport: unassignedTopics.map((t: string) => ({ keyword: t, status: 'unassigned' })),
               preferredLanguage: student.preferredLanguage,
               hoursPerWeekNeeded: student.hoursPerWeekNeeded,
             }
