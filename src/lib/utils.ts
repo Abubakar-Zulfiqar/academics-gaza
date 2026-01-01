@@ -311,7 +311,7 @@ export function calculateSmartSubjectScore(
   // Score is based on: number of matches and quality of matches
   const matchRatio = matchedPairs.length / studentTopics.length
   const avgSimilarity = matchedPairs.length > 0
-    ? matchedPairs.reduce((sum, p) => sum + p.similarity, 0) / matchedPairs.length
+    ? matchedPairs.reduce((sum: number, p: { similarity: number }) => sum + p.similarity, 0) / matchedPairs.length
     : 0
 
   const score = matchRatio * avgSimilarity * 100 // 0 to 100
@@ -414,10 +414,10 @@ export function calculateMatchScore(
   const reasons: string[] = []
 
   // Field match (40 points) - weighted by average similarity
-  const avgFieldSimilarity = fieldMatches.reduce((sum, m) => sum + m.similarity, 0) / fieldMatches.length
+  const avgFieldSimilarity = fieldMatches.reduce((sum: number, m: { similarity: number }) => sum + m.similarity, 0) / fieldMatches.length
   const fieldScore = Math.round(40 * avgFieldSimilarity)
   score += fieldScore
-  const matchedFieldNames = fieldMatches.map(m =>
+  const matchedFieldNames = fieldMatches.map((m: { volunteer: string; student: string }) =>
     m.volunteer.toLowerCase() === m.student.toLowerCase()
       ? m.volunteer
       : `${m.student} ≈ ${m.volunteer}`

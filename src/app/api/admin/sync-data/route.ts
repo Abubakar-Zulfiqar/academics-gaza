@@ -24,14 +24,14 @@ export async function POST() {
 
     for (const v of volunteers) {
       // Calculate actual values from related data
-      const actualCapacity = v.matches.filter(m => ['accepted', 'active'].includes(m.status)).length
-      const actualStudentsHelped = new Set(v.matches.filter(m =>
+      const actualCapacity = v.matches.filter((m: typeof v.matches[number]) => ['accepted', 'active'].includes(m.status)).length
+      const actualStudentsHelped = new Set(v.matches.filter((m: typeof v.matches[number]) =>
         ['accepted', 'active', 'completed'].includes(m.status)
-      ).map(m => m.studentId)).size
+      ).map((m: typeof v.matches[number]) => m.studentId)).size
 
-      const totalMinutes = v.matches.flatMap(m => m.sessions)
-        .filter(s => s.status === 'completed')
-        .reduce((acc, s) => acc + (s.durationMinutes || 0), 0)
+      const totalMinutes = v.matches.flatMap((m: typeof v.matches[number]) => m.sessions)
+        .filter((s: typeof v.matches[number]['sessions'][number]) => s.status === 'completed')
+        .reduce((acc: number, s: typeof v.matches[number]['sessions'][number]) => acc + (s.durationMinutes || 0), 0)
       const actualHours = Math.round(totalMinutes / 60 * 10) / 10
 
       // Check if update needed

@@ -131,9 +131,9 @@ export async function GET() {
       })
     })
     const popularSubjects = Object.entries(subjectCounts)
-      .sort((a, b) => b[1] - a[1])
+      .sort((a: [string, number], b: [string, number]) => b[1] - a[1])
       .slice(0, 10)
-      .map(([subject, count]) => ({ subject, count }))
+      .map(([subject, count]: [string, number]) => ({ subject, count }))
 
     // Registrations over time (last 30 days)
     const registrationsOverTime: Record<string, { students: number; volunteers: number }> = {}
@@ -180,12 +180,13 @@ export async function GET() {
       ...Object.keys(volunteerFieldCounts),
     ])
 
-    const fieldDemandAnalysis = Array.from(allFields).map((field) => ({
+    type FieldAnalysis = { field: string; studentDemand: number; volunteerSupply: number; gap: number }
+    const fieldDemandAnalysis = Array.from(allFields).map((field: string): FieldAnalysis => ({
       field: field.charAt(0).toUpperCase() + field.slice(1),
       studentDemand: studentFieldCounts[field] || 0,
       volunteerSupply: volunteerFieldCounts[field] || 0,
       gap: (studentFieldCounts[field] || 0) - (volunteerFieldCounts[field] || 0),
-    })).sort((a, b) => b.gap - a.gap)
+    })).sort((a: FieldAnalysis, b: FieldAnalysis) => b.gap - a.gap)
 
     // Subject demand analysis (topics students need vs subjects volunteers offer)
     const topicDemand: Record<string, { demand: number; assigned: number }> = {}
@@ -212,15 +213,16 @@ export async function GET() {
     })
 
     // High demand subjects (most requested by students)
+    type SubjectAnalysis = { subject: string; demand: number; assigned: number; unassigned: number; volunteerSupply: number }
     const subjectDemandAnalysis = Object.entries(topicDemand)
-      .map(([subject, data]) => ({
+      .map(([subject, data]: [string, { demand: number; assigned: number }]): SubjectAnalysis => ({
         subject: subject.charAt(0).toUpperCase() + subject.slice(1),
         demand: data.demand,
         assigned: data.assigned,
         unassigned: data.demand - data.assigned,
         volunteerSupply: volunteerSubjectCounts[subject] || 0,
       }))
-      .sort((a, b) => b.unassigned - a.unassigned)
+      .sort((a: SubjectAnalysis, b: SubjectAnalysis) => b.unassigned - a.unassigned)
       .slice(0, 15)
 
     // Volunteer capacity utilization
@@ -259,27 +261,27 @@ export async function GET() {
 
     // Top fields by student count
     const topStudentFields = Object.entries(studentFieldCounts)
-      .sort((a, b) => b[1] - a[1])
+      .sort((a: [string, number], b: [string, number]) => b[1] - a[1])
       .slice(0, 10)
-      .map(([field, count]) => ({
+      .map(([field, count]: [string, number]) => ({
         field: field.charAt(0).toUpperCase() + field.slice(1),
         count,
       }))
 
     // Top fields by volunteer count
     const topVolunteerFields = Object.entries(volunteerFieldCounts)
-      .sort((a, b) => b[1] - a[1])
+      .sort((a: [string, number], b: [string, number]) => b[1] - a[1])
       .slice(0, 10)
-      .map(([field, count]) => ({
+      .map(([field, count]: [string, number]) => ({
         field: field.charAt(0).toUpperCase() + field.slice(1),
         count,
       }))
 
     // Top volunteer subjects
     const topVolunteerSubjects = Object.entries(volunteerSubjectCounts)
-      .sort((a, b) => b[1] - a[1])
+      .sort((a: [string, number], b: [string, number]) => b[1] - a[1])
       .slice(0, 10)
-      .map(([subject, count]) => ({
+      .map(([subject, count]: [string, number]) => ({
         subject: subject.charAt(0).toUpperCase() + subject.slice(1),
         count,
       }))
@@ -306,21 +308,21 @@ export async function GET() {
         volunteersWithActiveMatch,
         volunteersWithoutMatch,
       },
-      causeDistribution: Object.entries(causeDistribution).map(([cause, data]) => ({
+      causeDistribution: Object.entries(causeDistribution).map(([cause, data]: [string, { students: number; volunteers: number }]) => ({
         cause,
         ...data,
       })),
-      matchStatusDistribution: Object.entries(matchStatusDistribution).map(([status, count]) => ({
+      matchStatusDistribution: Object.entries(matchStatusDistribution).map(([status, count]: [string, number]) => ({
         status,
         count,
       })),
       popularSubjects,
       sessionsOverTime: Object.entries(sessionsOverTime)
-        .map(([date, data]) => ({ date, ...data }))
-        .sort((a, b) => a.date.localeCompare(b.date)),
+        .map(([date, data]: [string, { scheduled: number; completed: number }]) => ({ date, ...data }))
+        .sort((a: { date: string }, b: { date: string }) => a.date.localeCompare(b.date)),
       registrationsOverTime: Object.entries(registrationsOverTime)
-        .map(([date, data]) => ({ date, ...data }))
-        .sort((a, b) => a.date.localeCompare(b.date)),
+        .map(([date, data]: [string, { students: number; volunteers: number }]) => ({ date, ...data }))
+        .sort((a: { date: string }, b: { date: string }) => a.date.localeCompare(b.date)),
       fieldDemandAnalysis,
       subjectDemandAnalysis,
       topStudentFields,

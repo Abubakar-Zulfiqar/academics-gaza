@@ -68,7 +68,7 @@ export async function POST(
 
     // Update student's topics to assigned
     const topics = match.student.topicsNeedSupport as unknown as Topic[]
-    const updatedTopics = topics.map((topic) => {
+    const updatedTopics = topics.map((topic: Topic) => {
       if (match.assignedSubjects.includes(topic.keyword)) {
         return {
           ...topic,

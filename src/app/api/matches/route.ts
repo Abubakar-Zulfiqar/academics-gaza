@@ -203,7 +203,7 @@ export async function POST(request: NextRequest) {
 
       // Update student's topic status to mark assigned subjects
       if (assignedSubjects && assignedSubjects.length > 0) {
-        const updatedTopics = topics.map((topic) => {
+        const updatedTopics = topics.map((topic: { keyword: string; status: string }) => {
           if (assignedSubjects.some((s: string) => s.toLowerCase() === topic.keyword.toLowerCase())) {
             return { ...topic, status: 'assigned', assignedTo: volunteerId }
           }

@@ -504,7 +504,7 @@ export async function calculateEmbeddingSubjectScore(
   const matchRatio = matchedPairs.length / studentTopics.length
   const avgSimilarity =
     matchedPairs.length > 0
-      ? matchedPairs.reduce((sum, p) => sum + p.similarity, 0) / matchedPairs.length
+      ? matchedPairs.reduce((sum: number, p: { similarity: number }) => sum + p.similarity, 0) / matchedPairs.length
       : 0
 
   const score = matchRatio * avgSimilarity  // matchRatio (0-1) * avgSimilarity (0-100) = score (0-100)
@@ -564,7 +564,7 @@ export async function calculateEmbeddingFieldScore(
     return { score: 0, matchedPairs: [] }
   }
 
-  const avgSimilarity = matchedPairs.reduce((sum, p) => sum + p.similarity, 0) / matchedPairs.length
+  const avgSimilarity = matchedPairs.reduce((sum: number, p: { similarity: number }) => sum + p.similarity, 0) / matchedPairs.length
   const score = avgSimilarity * 100
 
   return { score, matchedPairs }

@@ -65,7 +65,7 @@ export async function GET() {
 
     // Get available volunteer capacity
     const volunteerCapacityAvailable = allVolunteers.reduce(
-      (acc, v) => acc + Math.max(0, v.maxCapacity - v.currentCapacity),
+      (acc: number, v: typeof allVolunteers[number]) => acc + Math.max(0, v.maxCapacity - v.currentCapacity),
       0
     )
 

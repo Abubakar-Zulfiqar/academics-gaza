@@ -125,7 +125,7 @@ function basicSubjectMatch(
   // avgSimilarity is already 0-100
   const matchRatio = matchedPairs.length / studentTopics.length
   const avgSimilarity = matchedPairs.length > 0
-    ? matchedPairs.reduce((sum, p) => sum + p.similarity, 0) / matchedPairs.length
+    ? matchedPairs.reduce((sum: number, p: { similarity: number }) => sum + p.similarity, 0) / matchedPairs.length
     : 0
   const score = matchRatio * avgSimilarity
 
