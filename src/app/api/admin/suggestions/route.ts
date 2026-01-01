@@ -178,11 +178,11 @@ export async function GET() {
     // Compare each student with each volunteer
     for (const student of students) {
       const topics = student.topicsNeedSupport as unknown as Topic[]
-      const studentTopics = topics.map(t => t.keyword)
+      const studentTopics = topics.map((t: Topic) => t.keyword)
 
       // Get ALL volunteer IDs this student has been matched with (including rejected)
       // This ensures rejected pairs are never suggested again
-      const studentMatchedVolunteerIds = student.matches.map(m => m.volunteerId)
+      const studentMatchedVolunteerIds = student.matches.map((m: any) => m.volunteerId)
 
       for (const volunteer of volunteers) {
         // Skip if already matched (including rejected - don't re-suggest rejected pairs)
@@ -201,8 +201,8 @@ export async function GET() {
         )
 
         // Convert to expected format
-        const matchingKeywords = subjectResult.matchedPairs.map(p => p.student)
-        const matchingKeywordsDetailed: MatchingKeyword[] = subjectResult.matchedPairs.map(p => ({
+        const matchingKeywords = subjectResult.matchedPairs.map((p: { student: string }) => p.student)
+        const matchingKeywordsDetailed: MatchingKeyword[] = subjectResult.matchedPairs.map((p: { student: string; volunteer: string; similarity: number }) => ({
           studentTopic: p.student,
           volunteerSubject: p.volunteer,
           similarity: Math.round(p.similarity),
@@ -212,7 +212,7 @@ export async function GET() {
         const matchingFields = getMatchingFields(volunteer.fieldsOfExpertise, student.fieldsOfStudy)
 
         // Get volunteer's existing matches
-        const volunteerExistingMatches: VolunteerExistingMatch[] = volunteer.matches.map(m => ({
+        const volunteerExistingMatches: VolunteerExistingMatch[] = volunteer.matches.map((m: any) => ({
           studentName: m.student.fullName,
           status: m.status,
           subjects: m.assignedSubjects,
