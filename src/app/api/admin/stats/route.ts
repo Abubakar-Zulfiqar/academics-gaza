@@ -36,16 +36,16 @@ export async function GET() {
       }),
     ])
 
-    const activeMatches = allMatches.filter((m) => m.status === 'active').length
-    const pendingMatches = allMatches.filter((m) =>
+    const activeMatches = allMatches.filter((m: typeof allMatches[number]) => m.status === 'active').length
+    const pendingMatches = allMatches.filter((m: typeof allMatches[number]) =>
       ['pending_email', 'email_sent', 'auto_suggested'].includes(m.status)
     ).length
 
     // Get pending action breakdown
     const pendingActions = {
-      autoSuggested: allMatches.filter((m) => m.status === 'auto_suggested').length,
-      pendingEmail: allMatches.filter((m) => m.status === 'pending_email').length,
-      emailSent: allMatches.filter((m) => m.status === 'email_sent').length,
+      autoSuggested: allMatches.filter((m: typeof allMatches[number]) => m.status === 'auto_suggested').length,
+      pendingEmail: allMatches.filter((m: typeof allMatches[number]) => m.status === 'pending_email').length,
+      emailSent: allMatches.filter((m: typeof allMatches[number]) => m.status === 'email_sent').length,
     }
 
     // Get students with unassigned topics
@@ -85,14 +85,14 @@ export async function GET() {
       })
     })
 
-    const causeBreakdown = Array.from(causeMap.entries()).map(([cause, counts]) => ({
+    const causeBreakdown = Array.from(causeMap.entries()).map(([cause, counts]: [string, { students: number; volunteers: number }]) => ({
       cause,
       students: counts.students,
       volunteers: counts.volunteers,
     }))
 
     // Get recent matches with more details
-    const recentMatches = allMatches.slice(0, 8).map((match) => ({
+    const recentMatches = allMatches.slice(0, 8).map((match: typeof allMatches[number]) => ({
       id: match.id,
       status: match.status,
       matchScore: match.matchScore,
