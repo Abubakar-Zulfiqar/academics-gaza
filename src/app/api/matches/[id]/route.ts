@@ -56,7 +56,7 @@ export async function DELETE(
           // If this topic was assigned in this match, reset it
           if (
             match.assignedSubjects.some(
-              (s) => s.toLowerCase() === topic.keyword.toLowerCase()
+              (s: string) => s.toLowerCase() === topic.keyword.toLowerCase()
             )
           ) {
             // eslint-disable-next-line @typescript-eslint/no-unused-vars

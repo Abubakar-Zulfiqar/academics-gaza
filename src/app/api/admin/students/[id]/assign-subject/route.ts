@@ -76,7 +76,7 @@ export async function POST(
     // Update student topics (case-insensitive search)
     const topics = (student.topicsNeedSupport as unknown as TopicWithAssignment[]) || []
     const topicIndex = topics.findIndex(
-      (t) => t.keyword.toLowerCase() === subjectKeyword.toLowerCase()
+      (t: TopicWithAssignment) => t.keyword.toLowerCase() === subjectKeyword.toLowerCase()
     )
 
     if (topicIndex === -1) {
@@ -129,7 +129,7 @@ export async function POST(
       // Add subject to existing match if not already there (case-insensitive check)
       const currentSubjects = existingMatch.assignedSubjects || []
       const alreadyHasSubject = currentSubjects.some(
-        (s) => s.toLowerCase() === actualKeyword.toLowerCase()
+        (s: string) => s.toLowerCase() === actualKeyword.toLowerCase()
       )
       if (!alreadyHasSubject) {
         await prisma.match.update({
@@ -204,7 +204,7 @@ export async function DELETE(
 
     const topics = (student.topicsNeedSupport as unknown as TopicWithAssignment[]) || []
     const topicIndex = topics.findIndex(
-      (t) => t.keyword.toLowerCase() === subjectKeyword.toLowerCase()
+      (t: TopicWithAssignment) => t.keyword.toLowerCase() === subjectKeyword.toLowerCase()
     )
 
     if (topicIndex === -1) {
@@ -251,7 +251,7 @@ export async function DELETE(
 
     if (match) {
       const updatedSubjects = match.assignedSubjects.filter(
-        (s) => s.toLowerCase() !== actualKeyword.toLowerCase()
+        (s: string) => s.toLowerCase() !== actualKeyword.toLowerCase()
       )
       if (updatedSubjects.length === 0) {
         // Delete match if no subjects left
