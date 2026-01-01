@@ -31,7 +31,7 @@ docker-compose down                             # Stop containers
 ## Architecture
 
 ### Tech Stack
-- **Frontend**: Next.js 16 (App Router) + React 19 + TypeScript + Tailwind CSS 4
+- **Frontend**: Next.js 16.1 (App Router) + React 19 + TypeScript + Tailwind CSS 4
 - **UI Components**: Shadcn/ui (in `src/components/ui/`)
 - **State**: Zustand (`src/store/auth-store.ts`) + TanStack React Query
 - **Database**: PostgreSQL + Prisma ORM
