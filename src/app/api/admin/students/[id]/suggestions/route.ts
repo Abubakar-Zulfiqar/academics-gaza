@@ -179,7 +179,7 @@ export async function GET(
     }
 
     // Create a map of existing matches for quick lookup
-    const existingMatchesMap = new Map(
+    const existingMatchesMap = new Map<string, { status: string; assignedSubjects: string[] }>(
       student.matches.map((m: any) => [m.volunteerId, m])
     )
 
