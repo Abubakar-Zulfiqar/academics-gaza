@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { Prisma } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
 import { verifyAccessToken } from '@/lib/auth'
 import { cookies } from 'next/headers'
@@ -105,7 +104,8 @@ export async function POST(
     // Update student record
     await prisma.student.update({
       where: { id: studentId },
-      data: { topicsNeedSupport: topics as unknown as Prisma.InputJsonValue },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      data: { topicsNeedSupport: topics as any },
     })
 
     // Create assignment audit record
@@ -229,7 +229,8 @@ export async function DELETE(
 
     await prisma.student.update({
       where: { id: studentId },
-      data: { topicsNeedSupport: topics as unknown as Prisma.InputJsonValue },
+      // eslint-disable-next-line @typescript-eslint/no-explicit-any
+      data: { topicsNeedSupport: topics as any },
     })
 
     // Create audit record

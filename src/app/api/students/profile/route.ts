@@ -90,7 +90,8 @@ export async function POST(request: NextRequest) {
         originalLocation: validatedData.originalLocation,
         cause: validatedData.cause,
         fieldsOfStudy: validatedData.fieldsOfStudy,
-        topicsNeedSupport: validatedData.topicsNeedSupport,
+        // eslint-disable-next-line @typescript-eslint/no-explicit-any
+        topicsNeedSupport: validatedData.topicsNeedSupport as any,
         originalUniversity: validatedData.originalUniversity,
         currentUniversity: validatedData.currentUniversity,
         creditsRemaining: validatedData.creditsRemaining,

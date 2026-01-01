@@ -212,7 +212,8 @@ export async function POST(request: NextRequest) {
 
         await tx.student.update({
           where: { id: studentId },
-          data: { topicsNeedSupport: updatedTopics },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          data: { topicsNeedSupport: updatedTopics as any },
         })
       }
 

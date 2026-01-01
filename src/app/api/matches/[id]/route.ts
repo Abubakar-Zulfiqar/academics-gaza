@@ -1,5 +1,4 @@
 import { NextRequest, NextResponse } from 'next/server'
-import { Prisma } from '@prisma/client'
 import { prisma } from '@/lib/prisma'
 import { verifyAccessToken } from '@/lib/auth'
 import { cookies } from 'next/headers'
@@ -69,7 +68,8 @@ export async function DELETE(
 
         await tx.student.update({
           where: { id: match.studentId },
-          data: { topicsNeedSupport: updatedTopics as unknown as Prisma.InputJsonValue },
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          data: { topicsNeedSupport: updatedTopics as any },
         })
       }
 

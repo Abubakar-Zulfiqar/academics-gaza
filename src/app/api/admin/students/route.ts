@@ -176,7 +176,8 @@ export async function POST(request: NextRequest) {
           originalLocation,
           cause,
           fieldsOfStudy: fieldsOfStudy || [],
-          topicsNeedSupport: formattedTopics,
+          // eslint-disable-next-line @typescript-eslint/no-explicit-any
+          topicsNeedSupport: formattedTopics as any,
           originalUniversity,
           currentUniversity,
           creditsRemaining: creditsRemaining ? parseInt(creditsRemaining) : null,
