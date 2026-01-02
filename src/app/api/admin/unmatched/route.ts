@@ -87,16 +87,16 @@ export async function GET() {
     ])
 
     // Create sets of matched IDs
-    const matchedStudentIds = new Set(activeMatches.map(m => m.studentId))
-    const matchedVolunteerIds = new Set(activeMatches.map(m => m.volunteerId))
+    const matchedStudentIds = new Set(activeMatches.map((m: typeof activeMatches[number]) => m.studentId))
+    const matchedVolunteerIds = new Set(activeMatches.map((m: typeof activeMatches[number]) => m.volunteerId))
 
     // Find TRULY unmatched students - those with NO possible volunteer matches
-    const unmatchedStudents = allStudents.filter(student => {
+    const unmatchedStudents = allStudents.filter((student: typeof allStudents[number]) => {
       // Skip if already has an active match
       if (matchedStudentIds.has(student.id)) return false
 
       // Check if ANY volunteer could match this student
-      const hasPossibleMatch = allVolunteers.some(volunteer => {
+      const hasPossibleMatch = allVolunteers.some((volunteer: typeof allVolunteers[number]) => {
         // Volunteer must support the student's cause
         if (!volunteer.causes.includes(student.cause)) return false
         // Field match required
@@ -105,7 +105,7 @@ export async function GET() {
         if (volunteer.currentCapacity >= volunteer.maxCapacity) return false
         // Not already matched with this student
         const existingMatch = activeMatches.find(
-          m => m.studentId === student.id && m.volunteerId === volunteer.id
+          (m: typeof activeMatches[number]) => m.studentId === student.id && m.volunteerId === volunteer.id
         )
         if (existingMatch) return false
 
@@ -117,19 +117,19 @@ export async function GET() {
     })
 
     // Find TRULY unmatched volunteers - those with NO possible student matches
-    const unmatchedVolunteers = allVolunteers.filter(volunteer => {
+    const unmatchedVolunteers = allVolunteers.filter((volunteer: typeof allVolunteers[number]) => {
       // Skip if already has an active match
       if (matchedVolunteerIds.has(volunteer.id)) return false
 
       // Check if ANY student could match this volunteer
-      const hasPossibleMatch = allStudents.some(student => {
+      const hasPossibleMatch = allStudents.some((student: typeof allStudents[number]) => {
         // Volunteer must support the student's cause
         if (!volunteer.causes.includes(student.cause)) return false
         // Field match required
         if (!hasFieldMatch(student.fieldsOfStudy, volunteer.fieldsOfExpertise)) return false
         // Not already matched with this volunteer
         const existingMatch = activeMatches.find(
-          m => m.studentId === student.id && m.volunteerId === volunteer.id
+          (m: typeof activeMatches[number]) => m.studentId === student.id && m.volunteerId === volunteer.id
         )
         if (existingMatch) return false
 
