@@ -89,7 +89,7 @@ export async function POST(request: NextRequest) {
       where: { isActive: true },
       select: { name: true },
     })
-    const allCauseNames = allCauses.map(c => c.name)
+    const allCauseNames = allCauses.map((c: { name: string }) => c.name)
 
     const volunteer = await prisma.volunteer.create({
       data: {

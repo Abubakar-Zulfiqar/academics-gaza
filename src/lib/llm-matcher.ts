@@ -463,7 +463,7 @@ export async function calculateFullMatch(
         const matchDescriptions = subjectMatch.matches
           .slice(0, 3)
           .map(
-            (m) =>
+            (m: { studentSubject: string; volunteerSubject: string; confidence: number }) =>
               `${m.studentSubject} ≈ ${m.volunteerSubject} (${m.confidence}%)`
           )
         reasons.push(`LLM Subject matches: ${matchDescriptions.join(', ')}`)

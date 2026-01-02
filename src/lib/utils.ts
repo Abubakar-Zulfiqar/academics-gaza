@@ -437,7 +437,7 @@ export function calculateMatchScore(
   score += subjectScore
 
   if (subjectMatchResult.matchedPairs.length > 0) {
-    const matchDescriptions = subjectMatchResult.matchedPairs.map(p => {
+    const matchDescriptions = subjectMatchResult.matchedPairs.map((p: { volunteer: string; student: string; similarity: number }) => {
       const similarity = Math.round(p.similarity * 100)
       return p.volunteer.toLowerCase() === p.student.toLowerCase()
         ? p.volunteer
