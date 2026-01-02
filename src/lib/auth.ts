@@ -2,7 +2,9 @@ import { SignJWT, jwtVerify } from 'jose'
 import bcrypt from 'bcryptjs'
 import { cookies } from 'next/headers'
 import prisma from './prisma'
-import { UserRole } from '@prisma/client'
+
+// Define UserRole locally to avoid Prisma client export issues on Vercel
+export type UserRole = 'admin' | 'volunteer' | 'student'
 
 const JWT_SECRET = new TextEncoder().encode(process.env.JWT_SECRET || 'default-secret')
 const JWT_REFRESH_SECRET = new TextEncoder().encode(process.env.JWT_REFRESH_SECRET || 'default-refresh-secret')
