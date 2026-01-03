@@ -181,7 +181,7 @@ export async function POST(request: NextRequest) {
     )
 
     // Create match and update student topics in a transaction
-    const match = await prisma.$transaction(async (tx: typeof prisma) => {
+    const match = await prisma.$transaction(async (tx) => {
       // Create the match
       const newMatch = await tx.match.create({
         data: {

@@ -90,6 +90,7 @@ src/app/
 - Enforce roles before processing (return 401/403 for unauthorized)
 - Return `NextResponse.json()` with appropriate status codes
 - API routes in `src/app/api/` follow Next.js App Router conventions
+- Health check: `GET /api/health` returns `{ status, timestamp, database }`
 
 ### Authentication Flow
 - Login returns httpOnly cookies: `accessToken` (15min) + `refreshToken` (7d)
